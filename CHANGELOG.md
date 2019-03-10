@@ -2,9 +2,17 @@
 
 ### Added
 
-- Added *Include End Point* option to *Float Range* node. [f98f11c](https://github.com/JacquesLucke/animation_nodes/commit/f98f11c)
+- Added *Include End Point* option to the *Float Range* node.
+- Added collection option to *Execution Triggers*.
 
 
 ### Fixed
 
-- Fixed sort node. [0832e2e](https://github.com/JacquesLucke/animation_nodes/commit/0832e2e)
+- Fixed the *Sort* node for windows users.
+- Fixed bad path resolution in the *Set Keyframe* node.
+
+### Changed
+
+- Redesigned *Execution Triggers* UI.
+- Allow multiple comma separated data paths per *Execution Trigger*.
+- Replaced colored icons in the *Node Menu* to be more uniform.
