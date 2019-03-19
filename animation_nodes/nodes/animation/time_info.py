@@ -11,6 +11,7 @@ class TimeInfoNode(bpy.types.Node, AnimationNode):
         self.newOutput("Float", "Frame", "frame")
         self.newOutput("Float", "Start Frame", "startFrame", hide = True)
         self.newOutput("Float", "End Frame", "endFrame", hide = True)
+        self.newOutput("Float", "Duration", "duration", hide = True)
         self.newOutput("Float", "Frame Rate", "frameRate", hide = True)
 
     def edit(self):
@@ -29,6 +30,7 @@ class TimeInfoNode(bpy.types.Node, AnimationNode):
         if "frame" in required:      yield "    frame = scene.frame_current_final"
         if "startFrame" in required: yield "    startFrame = scene.frame_start"
         if "endFrame" in required:   yield "    endFrame = scene.frame_end"
+        if "duration" in required:   yield "    duration = scene.frame_end - scene.frame_start + 1"
         if "frameRate" in required:  yield "    frameRate = scene.render.fps"
         yield "else:"
         yield "    frame = startFrame = endFrame = frameRate = 0"
