@@ -4,6 +4,11 @@
         "Import" : "from ... math.vector cimport Vector3",
         "Return" : "Pointer"
     },
+    "Vector2DList" : {
+      "Type" : "Vector2",
+      "Import" : "from ... math.vector cimport Vector2",
+      "Return" : "Pointer"
+    },
     "Matrix4x4List" : {
         "Type" : "Matrix4",
         "Import" : "from ... math.matrix cimport Matrix4",
@@ -13,6 +18,11 @@
         "Type" : "Euler3",
         "Import" : "from ... math.euler cimport Euler3",
         "Return" : "Pointer"
+    },
+    "ColorList" : {
+      "Type" : "Color",
+      "Import" : "from ... math.color cimport Color",
+      "Return" : "Pointer"
     },
     "FloatList" : {
         "Type" : "float",

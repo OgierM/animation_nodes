@@ -1,7 +1,9 @@
 import bpy
+from .. import events
 
 def getActiveDepsgraph():
+    if events.evaluatedDepsgraph: return events.evaluatedDepsgraph
     return bpy.context.evaluated_depsgraph_get()
 
-def getEvaluatedObject(object):
-    return object.evaluated_get(getActiveDepsgraph())
+def getEvaluatedID(idObject):
+    return idObject.evaluated_get(getActiveDepsgraph())

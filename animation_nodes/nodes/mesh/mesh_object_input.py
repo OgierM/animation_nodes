@@ -13,7 +13,8 @@ class MeshObjectInputNode(bpy.types.Node, AnimationNode):
         self.newInput("Object", "Object", "object", defaultDrawType = "PROPERTY_ONLY")
         self.newInput("Boolean", "Use World Space", "useWorldSpace")
         self.newInput("Boolean", "Use Modifiers", "useModifiers", value = False)
-        self.newInput("Boolean", "Load UVs", "loadUVs", value = False)
+        self.newInput("Boolean", "Load UVs", "loadUVs", value = False, hide = True)
+        self.newInput("Boolean", "Load Vertex Colors", "loadVertexColors", value = False, hide = True)
         self.newInput("Scene", "Scene", "scene", hide = True)
 
         self.newOutput("Mesh", "Mesh", "mesh")
@@ -31,7 +32,7 @@ class MeshObjectInputNode(bpy.types.Node, AnimationNode):
         self.newOutput("Integer List", "Material Indices", "materialIndices")
 
         self.newOutput("Text", "Mesh Name", "meshName")
-
+        
         visibleOutputs = ("Mesh", "Vertex Locations", "Polygon Centers")
         for socket in self.outputs:
             socket.hide = socket.name not in visibleOutputs
@@ -61,22 +62,23 @@ class MeshObjectInputNode(bpy.types.Node, AnimationNode):
 
     def iterGetMeshDataCodeLines(self, required):
         if "meshName" in required:
-            "meshName = sourceMesh.name"
-
+            yield "meshName = sourceMesh.name"
+        
+        yield "evaluatedObject = AN.utils.depsgraph.getEvaluatedID(object)"
         meshRequired = "mesh" in required
-
+        
         if "vertexLocations" in required or meshRequired:
-            yield "vertexLocations = self.getVertexLocations(sourceMesh, object, useWorldSpace)"
+            yield "vertexLocations = self.getVertexLocations(sourceMesh, evaluatedObject, useWorldSpace)"
         if "edgeIndices" in required or meshRequired:
             yield "edgeIndices = sourceMesh.an.getEdgeIndices()"
         if "polygonIndices" in required or meshRequired:
             yield "polygonIndices = sourceMesh.an.getPolygonIndices()"
         if "vertexNormals" in required or meshRequired:
-            yield "vertexNormals = self.getVertexNormals(sourceMesh, object, useWorldSpace)"
+            yield "vertexNormals = self.getVertexNormals(sourceMesh, evaluatedObject, useWorldSpace)"
         if "polygonNormals" in required or meshRequired:
-            yield "polygonNormals = self.getPolygonNormals(sourceMesh, object, useWorldSpace)"
+            yield "polygonNormals = self.getPolygonNormals(sourceMesh, evaluatedObject, useWorldSpace)"
         if "polygonCenters" in required:
-            yield "polygonCenters = self.getPolygonCenters(sourceMesh, object, useWorldSpace)"
+            yield "polygonCenters = self.getPolygonCenters(sourceMesh, evaluatedObject, useWorldSpace)"
         if "localPolygonAreas" in required:
             yield "localPolygonAreas = DoubleList.fromValues(sourceMesh.an.getPolygonAreas())"
         if "materialIndices" in required:
@@ -88,6 +90,7 @@ class MeshObjectInputNode(bpy.types.Node, AnimationNode):
             yield "mesh.setPolygonNormals(polygonNormals)"
             yield "mesh.setLoopEdges(sourceMesh.an.getLoopEdges())"
             yield "if loadUVs: self.loadUVs(mesh, sourceMesh, object)"
+            yield "if loadVertexColors: self.loadVertexColors(mesh, sourceMesh, object)"
 
     def getVertexLocations(self, mesh, object, useWorldSpace):
         vertices = mesh.an.getVertices()
@@ -119,3 +122,11 @@ class MeshObjectInputNode(bpy.types.Node, AnimationNode):
                 mesh.insertUVMap(uvMapName, sourceMesh.an.getUVMap(uvMapName))
         else:
             self.setErrorMessage("Object has to be in object mode to load UV maps.")
+    
+    def loadVertexColors(self, mesh, sourceMesh, object):
+        if object.mode != "EDIT":
+            for colorLayerName in sourceMesh.vertex_colors.keys():
+                mesh.insertVertexColorLayer(colorLayerName, sourceMesh.an.getVertexColorLayer(colorLayerName))
+        else:
+            self.setErrorMessage("Object is in edit mode.")
+

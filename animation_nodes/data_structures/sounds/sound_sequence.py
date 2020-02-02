@@ -3,14 +3,16 @@ import bpy
 import aud
 from functools import lru_cache
 from . sound_data import SoundData
+from ... utils.depsgraph import getEvaluatedID
 
 # We define a constant sampleRate to avoid expensive resampling during execution.
 sampleRate = 44100
 
 class SoundSequence:
-    def __init__(self, data, start, end, volume, fps):
+    def __init__(self, data, start, startOffset, end, volume, fps):
         self.data = data
         self.start = start
+        self.startOffset = startOffset
         self.end = end
         self.volume = volume
         self.fps = fps
@@ -27,8 +29,8 @@ class SoundSequence:
 
         sequenceScene = findSceneWithSequence(sequence)
         fps = sequenceScene.render.fps
-        return cls(soundData, sequence.frame_final_start / fps, sequence.frame_final_end / fps,
-            sequence.volume, fps)
+        return cls(soundData, sequence.frame_final_start / fps, sequence.frame_offset_start / fps,
+            sequence.frame_final_end / fps, sequence.volume, fps)
 
 @lru_cache(maxsize=16)
 def getCachedSoundDataFromPath(path):
@@ -36,7 +38,7 @@ def getCachedSoundDataFromPath(path):
 
 @lru_cache(maxsize=16)
 def getCachedSoundDataFromSound(sound):
-    return getSoundData(sound.factory)
+    return getSoundData(getEvaluatedID(sound).factory)
 
 def getSoundData(sound):
     if sound.specs[0] == sampleRate:

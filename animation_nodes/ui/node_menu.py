@@ -201,6 +201,7 @@ class TextMenu(bpy.types.Menu):
         layout.separator()
         insertNode(layout, "an_TextBlockReaderNode", "Block Reader")
         insertNode(layout, "an_TextBlockWriterNode", "Block Writer")
+        insertNode(layout, "an_FilterBlendDataListByNameNode", "Filter Text Block List", {"dataType" : repr("Text Block")})
         insertNode(layout, "an_TextFileReaderNode", "File Reader")
         layout.separator()
         insertNode(layout, "an_TextSequenceOutputNode", "Sequence Output")
@@ -231,6 +232,7 @@ class ColorMenu(bpy.types.Menu):
         insertNode(layout, "an_CombineColorNode", "Combine Color")
         insertNode(layout, "an_SeparateColorNode", "Separate Color")
         insertNode(layout, "an_MixDataNode", "Mix", {"dataType" : repr("Color")})
+        layout.separator()
         insertNode(layout, "an_SetVertexColorNode", "Set Vertex Color")
 
 class ListMenu(bpy.types.Menu):
@@ -318,7 +320,8 @@ class ObjectMenu(bpy.types.Menu):
 
         insertNode(layout, "an_DataInputNode", "Object", {"assignedType" : repr("Object")})
         insertNode(layout, "an_CreateListNode", "List", {"assignedType" : repr("Object")})
-        insertNode(layout, "an_CollectionInfoNode", "Collection Info")
+        insertNode(layout, "an_FilterBlendDataListByNameNode", "Filter Object List", {"dataType" : repr("Object")})
+        layout.menu("AN_MT_collection_menu", text = "Collection")
         layout.separator()
         insertNode(layout, "an_ObjectTransformsInputNode", "Transforms Input")
         insertNode(layout, "an_ObjectTransformsOutputNode", "Transforms Output")
@@ -337,7 +340,6 @@ class ObjectMenu(bpy.types.Menu):
         insertNode(layout, "an_ObjectIDKeyNode", "ID Key")
         insertNode(layout, "an_CopyObjectDataNode", "Copy Data")
         insertNode(layout, "an_SetKeyframesNode", "Set Keyframes")
-        insertNode(layout, "an_CollectionOperationsNode", "Collection Operations")
         insertNode(layout, "an_ArmatureInfoNode", "Armature Info")
         layout.menu("AN_MT_object_utils_menu", text = "Utils")
         layout.separator()
@@ -357,6 +359,20 @@ class ObjectUtilsMenu(bpy.types.Menu):
         insertNode(layout, "an_GetSelectedObjectsNode", "Get Selected Objects")
         insertNode(layout, "an_GetActiveCameraNode", "Get Active Camera")
 
+class CollectionMenu(bpy.types.Menu):
+    bl_idname = "AN_MT_collection_menu"
+    bl_label = "Collection Menu"
+
+    def draw(self, context):
+        layout = self.layout
+        insertNode(layout, "an_DataInputNode", "Collection", {"assignedType" : repr("Collection")})
+        insertNode(layout, "an_CollectionInfoNode", "Collection Info")
+        insertNode(layout, "an_CollectionOperationsNode", "Collection Operations")
+        insertNode(layout, "an_BlendDataByNameNode", "Collection By Name", {"dataType" : repr("Collection")})
+        insertNode(layout, "an_CreateListNode", "Create Collection List", {"assignedType" : repr("Collection")})
+        insertNode(layout, "an_CombineListsNode", "Combine Collection Lists", {"assignedType" : repr("Collection")})
+        insertNode(layout, "an_FilterBlendDataListByNameNode", "Filter Collection List", {"dataType" : repr("Collection")})
+
 class MeshMenu(bpy.types.Menu):
     bl_idname = "AN_MT_mesh_menu"
     bl_label = "Mesh Menu"
@@ -367,8 +383,9 @@ class MeshMenu(bpy.types.Menu):
         insertNode(layout, "an_MeshInfoNode", "Mesh Info")
         insertNode(layout, "an_ObjectBoundingBoxNode", "Get Bounding Box")
         insertNode(layout, "an_CombineMeshNode", "Combine Mesh")
-        insertNode(layout, "an_VertexGroupInputNode", "Vertex Group Input")
         insertNode(layout, "an_MeshFromSplineNode", "Mesh From Spline")
+        layout.separator()
+        layout.menu("AN_MT_mesh_data_menu", text = "Mesh Data")
         layout.separator()
         insertNode(layout, "an_OffsetPolygonsNode", "Offset Polygons")
         insertNode(layout, "an_SeparatePolygonsNode", "Separate Polygons")
@@ -386,6 +403,23 @@ class MeshMenu(bpy.types.Menu):
         layout.menu("AN_MT_mesh_finalizing_menu", text = "Tools")
         layout.separator()
         insertNode(layout, "an_MeshObjectOutputNode", "Object Output")
+
+class MeshDataMenu(bpy.types.Menu):
+    bl_idname = "AN_MT_mesh_data_menu"
+    bl_label = "Mesh Data Menu"
+
+    def draw(self, context):
+        layout = self.layout
+        insertNode(layout, "an_VertexGroupInputNode", "Vertex Group Input")
+        insertNode(layout, "an_SetVertexWeightNode", "Set Vertex Weight")
+        insertNode(layout, "an_GetVertexColorLayerNode", "Get Vertex Color Layer")
+        insertNode(layout, "an_InsertVertexColorLayerNode", "Insert Vertex Color Layer")
+        insertNode(layout, "an_SetVertexColorNode", "Set Vertex Color")
+        insertNode(layout, "an_SetBevelVertexWeight", "Set Bevel Vertex Weight")
+        insertNode(layout, "an_SetBevelEdgeWeight", "Set Bevel Edge Weight")
+        insertNode(layout, "an_GetUVMapNode", "Get UV Map")
+        insertNode(layout, "an_InsertUVMapNode", "Insert UV Map")
+        insertNode(layout, "an_SetUVMapNode", "Set UV Map")
 
 class MeshGeneratorsMenu(bpy.types.Menu):
     bl_idname = "AN_MT_mesh_generators_menu"
@@ -414,6 +448,7 @@ class MeshOperatorsMenu(bpy.types.Menu):
         insertNode(layout, "an_EdgesOfPolygonsNode", "Edges of Polygons")
         layout.separator()
         insertNode(layout, "an_EdgeInfoNode", "Edge Info")
+        insertNode(layout, "an_GetLinkedVerticesNode", "Get Linked Vertices")
 
 class MeshFinalizingMenu(bpy.types.Menu):
     bl_idname = "AN_MT_mesh_finalizing_menu"
@@ -540,6 +575,7 @@ class MaterialMenu(bpy.types.Menu):
 
     def draw(self, context):
         layout = self.layout
+        insertNode(layout, "an_DataInputNode", "Material", {"assignedType" : repr("Material")})
         insertNode(layout, "an_ObjectMaterialOutputNode", "Object Material Output")
         insertNode(layout, "an_CyclesMaterialOutputNode", "Cycles Material Output")
         insertNode(layout, "an_MaterialOutputNode", "Material Output")
@@ -654,6 +690,9 @@ class SubprogramsMenu(bpy.types.Menu):
         insertNode(layout, "an_ScriptNode", "Script")
         layout.separator()
         insertNode(layout, "an_ExpressionNode", "Expression")
+        layout.separator()
+        insertNode(layout, "an_ViewportInputNode", "Viewport Input")
+        insertNode(layout, "an_DataInterfaceNode", "Data Interface")
 
 class LayoutMenu(bpy.types.Menu):
     bl_idname = "AN_MT_layout_menu"

@@ -3,6 +3,7 @@ import bmesh
 from bpy.props import *
 from ... utils.layout import writeText
 from ... base_types import AnimationNode
+from ... utils.animation import isAnimated
 from ... data_structures import UShortList
 from ... events import propertyChanged, executionCodeChanged
 
@@ -90,8 +91,11 @@ class MeshObjectOutputNode(bpy.types.Node, AnimationNode):
 
     def isValidObject(self, object):
         if object is None: return False
-        if object.type != "MESH" or object.mode != "OBJECT":
-            self.setErrorMessage("Object is not in object mode or is no mesh object")
+        if object.type != "MESH":
+            self.setErrorMessage("Object is not a mesh object.")
+            return False
+        if object.mode != "OBJECT":
+            self.setErrorMessage("Object is not in object mode.")
             return False
         return True
 
@@ -123,6 +127,11 @@ class MeshObjectOutputNode(bpy.types.Node, AnimationNode):
             outMesh.uv_layers.new(name = name)
             outMesh.uv_layers[name].data.foreach_set("uv", data.asMemoryView())
 
+        # Vertex Color Layers
+        for name, data in mesh.getVertexColorLayers():
+            outMesh.vertex_colors.new(name = name)
+            outMesh.vertex_colors[name].data.foreach_set("color", data.asMemoryView())
+
         if self.validateMesh:
             outMesh.validate(verbose = self.validateMeshVerbose)
 
@@ -131,7 +140,7 @@ class MeshObjectOutputNode(bpy.types.Node, AnimationNode):
 
     def setVertices(self, mesh, vertices):
         if len(mesh.vertices) != len(vertices):
-            self.setErrorMessage("The vertex amounts are not equal")
+            self.setErrorMessage("The vertex amounts are not equal.")
             return object
 
         mesh.vertices.foreach_set("co", vertices.asMemoryView())
@@ -141,7 +150,7 @@ class MeshObjectOutputNode(bpy.types.Node, AnimationNode):
         if len(materialIndices) == 0: return
         if len(mesh.polygons) == 0: return
         if materialIndices.containsValueLowerThan(0):
-            self.setErrorMessage("Material indices have to be greater or equal to zero")
+            self.setErrorMessage("Material indices have to be greater or equal to zero.")
             return
 
         allMaterialIndices = UShortList.fromValues(materialIndices)
@@ -152,5 +161,6 @@ class MeshObjectOutputNode(bpy.types.Node, AnimationNode):
         mesh.polygons[0].material_index = materialIndices[0]
 
     def ensureThatMeshHasAnimationData(self, mesh):
-        if mesh.animation_data is None:
-            mesh.animation_data_create()
+        if not isAnimated(mesh):
+            mesh['an_helper_property'] = 0
+            mesh.keyframe_insert(data_path = '["an_helper_property"]')
