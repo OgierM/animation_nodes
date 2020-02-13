@@ -506,17 +506,10 @@ class GPencilMenu(bpy.types.Menu):
         insertNode(layout, "an_GPFrameInfoNode", "Frame Info")
         insertNode(layout, "an_GPStrokeInfoNode", "Stroke Info")
         layout.separator()
-        insertNode(layout, "an_SetGPLayerBlendModeNode", "Set Layer Blend Mode")
-        insertNode(layout, "an_SetGPLayerOpacityNode", "Set Layer Opacity")
-        insertNode(layout, "an_SetGPLayerPassIndexNode", "Set Layer Pass Index")
+        insertNode(layout, "an_SetGPLayerAttributesNode", "Set Layer Attributes")
         insertNode(layout, "an_TransformGPLayerNode", "Transform Layer")
         layout.separator()
-        insertNode(layout, "an_MakeGPStrokeCyclicNode", "Make Stroke Cyclic")
-        insertNode(layout, "an_SetGPStrokeLineWidthNode", "Set Stroke Line Width")
-        insertNode(layout, "an_SetGPStrokeStartCapModeNode", "Set Stroke Start Cap Mode")
-        insertNode(layout, "an_SetGPStrokeEndCapModeNode", "Set Stroke End Cap Mode")
-        insertNode(layout, "an_SetGPStrokeMaterialIndexNode", "Set Stroke Material Index")
-        insertNode(layout, "an_SetGPStrokeDisplayModeNode", "Set Stroke Display Mode")
+        insertNode(layout, "an_SetGPStrokeAttributesNode", "Set Stroke Attributes")
         insertNode(layout, "an_ReplicateGPStrokeNode", "Replicate Stroke")
         insertNode(layout, "an_TransformGPStrokeNode", "Transform Stroke")
         layout.separator()
@@ -524,6 +517,9 @@ class GPencilMenu(bpy.types.Menu):
         insertNode(layout, "an_GPFrameFromStrokesNode", "Frame From Strokes")
         insertNode(layout, "an_GPLayerFromFramesNode", "Layer From Frames")
         insertNode(layout, "an_GPObjectOutputNode", "Object Output")
+        layout.separator()
+        insertNode(layout, "an_GPMaterialOutputNode", "GP Material Output")
+        insertNode(layout, "an_ObjectMaterialOutputNode", "Object Material Output")
 
 class ActionMenu(bpy.types.Menu):
     bl_idname = "AN_MT_action_menu"
@@ -611,6 +607,7 @@ class MaterialMenu(bpy.types.Menu):
         insertNode(layout, "an_ObjectMaterialOutputNode", "Object Material Output")
         insertNode(layout, "an_CyclesMaterialOutputNode", "Cycles Material Output")
         insertNode(layout, "an_MaterialOutputNode", "Material Output")
+        insertNode(layout, "an_GPMaterialOutputNode", "GP Material Output")
 
 class ParticleSystemMenu(bpy.types.Menu):
     bl_idname = "AN_MT_particle_system_menu"
