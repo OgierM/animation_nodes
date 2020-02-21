@@ -20,6 +20,11 @@
 - Added GP Object Material Output node.
 - Added Replicate GP Layer node.
 - Added Offset GP Layer Frames node.
+- Added Set Edge Crease node.
+- Added Set Polygon Material Index node.
+- Added Deep Copy option to the Copy Object Data node.
+- Added Decompose Text node.
+- Added Object Color Output node.
 
 ### Fixed
 
@@ -28,6 +33,8 @@
 - Fixed the Distribute Matrices node for the Spiral option.
 - Fixed VirtualPyList for singleton lists.
 - Fixed error due to duplication of nodes with code effects.
+- Fixed unexpected results and crashes during exporting.
+- Fixed enum identifiers that has spaces.
 
 ### Changed
 
@@ -35,6 +42,7 @@
 - Make all numeric types comparable.
 - Vectorize *Combine Color* node.
 - Replace the Font socket pick operator with a *Load Font* operator.
+- Moved panels from the Tool region to the UI region.
 
 ## 2.1.6
 

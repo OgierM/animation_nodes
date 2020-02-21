@@ -330,6 +330,7 @@ class ObjectMenu(bpy.types.Menu):
         insertNode(layout, "an_ObjectMatrixOutputNode", "Matrix Output")
         insertNode(layout, "an_ObjectAttributeInputNode", "Attribute Input")
         insertNode(layout, "an_ObjectAttributeOutputNode", "Attribute Output")
+        insertNode(layout, "an_ObjectColorOutputNode", "Color Output")
         insertNode(layout, "an_ObjectDataPathOutputNode", "Data Path Output")
         layout.separator()
         insertNode(layout, "an_ObjectVisibilityInputNode", "Visibility Input")
@@ -416,11 +417,13 @@ class MeshDataMenu(bpy.types.Menu):
         insertNode(layout, "an_GetVertexColorLayerNode", "Get Vertex Color Layer")
         insertNode(layout, "an_InsertVertexColorLayerNode", "Insert Vertex Color Layer")
         insertNode(layout, "an_SetVertexColorNode", "Set Vertex Color")
-        insertNode(layout, "an_SetBevelVertexWeight", "Set Bevel Vertex Weight")
-        insertNode(layout, "an_SetBevelEdgeWeight", "Set Bevel Edge Weight")
+        insertNode(layout, "an_SetBevelVertexWeightNode", "Set Bevel Vertex Weight")
+        insertNode(layout, "an_SetBevelEdgeWeightNode", "Set Bevel Edge Weight")
+        insertNode(layout, "an_SetEdgeCreaseNode", "Set Edge Crease")
         insertNode(layout, "an_GetUVMapNode", "Get UV Map")
         insertNode(layout, "an_InsertUVMapNode", "Insert UV Map")
         insertNode(layout, "an_SetUVMapNode", "Set UV Map")
+        insertNode(layout, "an_SetPolygonMaterialIndexNode", "Set Polygon Material Index")
 
 class MeshGeneratorsMenu(bpy.types.Menu):
     bl_idname = "AN_MT_mesh_generators_menu"
@@ -607,6 +610,7 @@ class MaterialMenu(bpy.types.Menu):
         layout = self.layout
         insertNode(layout, "an_DataInputNode", "Material", {"assignedType" : repr("Material")})
         insertNode(layout, "an_ObjectMaterialOutputNode", "Object Material Output")
+        insertNode(layout, "an_SetPolygonMaterialIndexNode", "Set Polygon Material Index")
         insertNode(layout, "an_CyclesMaterialOutputNode", "Cycles Material Output")
         insertNode(layout, "an_MaterialOutputNode", "Material Output")
         insertNode(layout, "an_GPMaterialOutputNode", "GP Material Output")
