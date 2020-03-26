@@ -463,6 +463,7 @@ class MeshFinalizingMenu(bpy.types.Menu):
         insertNode(layout, "an_BMeshRemoveDoublesNode", "Remove Doubles")
         insertNode(layout, "an_BMeshLimitedDissolveNode", "Limited Dissolve")
         insertNode(layout, "an_BMeshRecalculateFaceNormalsNode", "Recalculate Normals")
+        insertNode(layout, "an_BMeshInvertNormalsNode", "Invert Normals")
         insertNode(layout, "an_ShadeObjectSmoothNode", "Shade Object Smooth")
 
 class SplineMenu(bpy.types.Menu):
@@ -612,12 +613,13 @@ class MaterialMenu(bpy.types.Menu):
 
     def draw(self, context):
         layout = self.layout
-        insertNode(layout, "an_DataInputNode", "Material", {"assignedType" : repr("Material")})
+        insertNode(layout, "an_DataInputNode", "Material Input", {"assignedType" : repr("Material")})
+        insertNode(layout, "an_ObjectMaterialInputNode", "Object Material Input")
         insertNode(layout, "an_ObjectMaterialOutputNode", "Object Material Output")
-        insertNode(layout, "an_SetPolygonMaterialIndexNode", "Set Polygon Material Index")
-        insertNode(layout, "an_CyclesMaterialOutputNode", "Cycles Material Output")
         insertNode(layout, "an_MaterialOutputNode", "Material Output")
+        insertNode(layout, "an_CyclesMaterialOutputNode", "Cycles Material Output")
         insertNode(layout, "an_GPMaterialOutputNode", "GP Material Output")
+        insertNode(layout, "an_SetPolygonMaterialIndexNode", "Set Polygon Material Index")
 
 class ParticleSystemMenu(bpy.types.Menu):
     bl_idname = "AN_MT_particle_system_menu"

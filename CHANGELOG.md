@@ -11,6 +11,8 @@
 - Added List to Element link conversion.
 - Added GP sockets link conversions.
 - Added input range to Remap Falloff node.
+- Added Bmesh Invert Normals node.
+- Added Object Material Input node.
 
 ### Fixed
 
@@ -19,6 +21,8 @@
 - Fixed crash upon updating the Separate Text node when main collection is hidden.
 - Fixed the New Text Block operator in the script node.
 - Fixed enum callbacks by caching them.
+- Fixed the Triangulate BMesh node.
+- Fixed smooth sound spectrum evaluation.
 
 ### Changed
 
