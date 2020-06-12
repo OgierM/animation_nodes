@@ -31,12 +31,15 @@
 - Fixed incompatible declaration in getTrimmedCopy_LowLevel method.
 - Fixed Grease Pencil nodes for latest Blender API changes.
 - Fixed Project Point On Line distance output.
+- Fixed missing UV and vertex colors in the Transform Mesh node.
+- Fixed bad splines during rendering and baking.
 
 ### Changed
 
 - Vectorized the Tilt Spline node.
 - Instancer node objects are now removed regardless of their numbers of users.
 - Return empty spline from Trim Spline node if start and end are equal.
+- Migrate CI/CD pipeline to Github Workflows.
 
 ## 2.1.7
 
